@@ -34,11 +34,6 @@ alias zln='zmv -Lv'
 # Note that, unlike with Bash, you do not need to inform Zsh's completion system
 # of your aliases. It will figure them out automatically.
 
-# Set $PAGER if it hasn't been set yet. We need it below.
-# `:` is a builtin command that does nothing. We use it here to stop Zsh from
-# evaluating the value of our $expansion as a command.
-: ${PAGER:=less}
-
 # Associate file name .extensions with programs to open them.
 # This lets you open a file just by typing its name and pressing enter.
 # Note that the dot is implicit; `gz` below stands for files ending in .gz

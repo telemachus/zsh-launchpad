@@ -36,3 +36,21 @@ fpath=(
     # only for those commands that zsh doesn't already know how to complete.
     $HOMEBREW_PREFIX/share/zsh/site-functions
 )
+# As you can see above, you can include comments inside array declarations.
+
+# Set the default command to use for browsing text inside the terminal. Not
+# specific to zsh, but used by many external commands.
+export PAGER=less
+
+# Set the default command to use for launching a text editor inside the
+# terminal. Used by Zsh's `fc`, but moreso by many external commands.
+export EDITOR=nano
+
+# If `nano` is just a symlink to `pico`, then install Nano.
+[[ ${${:-=nano}:A} == ${${:-=pico}:A} ]] &&
+    brew install --formula nano
+
+# Set the default command to use for launching a text editor with a GUI; not
+# necessarily inside the terminal. Setting it here to Visual Studio Code, which
+# require that you installed the `code` command from there.
+export VISUAL=code
