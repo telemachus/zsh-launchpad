@@ -20,21 +20,22 @@ unsetopt FLOW_CONTROL
 #   you can edit the previous lines.
 bindkey '^[q' push-line-or-edit
 
+
+##
 # Alt-H: Get help on your current command.
-() {
-  unalias $1 2> /dev/null   # Remove the default.
+#
 
-  # Load the more advanced version.
-  # -R resolves the function immediately, so we can access the source dir.
-  autoload -RUz $1
+unalias run-help 2> /dev/null   # Remove the simple default.
+autoload -RUz run-help          # Load a more advanced version.
+# -R resolves the function immediately, so we can access the source dir.
 
-  # Load $functions_source, an associative array (a.k.a. dictionary, hash table
-  # or map) that maps each function to its source file.
-  zmodload -F zsh/parameter p:functions_source
+# Load $functions_source, an associative array (a.k.a. dictionary, hash table
+# or map) that maps each function to its source file.
+zmodload -F zsh/parameter p:functions_source
 
-  # Lazy-load all the run-help-* helper functions from the same dir.
-  autoload -Uz $functions_source[$1]-*~*.zwc  # Exclude .zwc files.
-} run-help
+# Lazy-load all the run-help-* helper functions from the same dir.
+autoload -Uz $functions_source[run-help]-*~*.zwc  # Exclude .zwc files.
+
 
 # Alt-V: Show the next key combo's terminal code and state what it does.
 bindkey '^[v' describe-key-briefly

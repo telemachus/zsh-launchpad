@@ -21,7 +21,7 @@ alias -- -='cd -'
 # '--' signifies the end of options. Otherwise, '-=...' would be interpreted as
 # a flag.
 
-# These aliases enable us to paste example code into the terminal without the
+# These aliases enable you to paste example code into the terminal without the
 # shell complaining about the pasted prompt symbol.
 alias %= \$=
 
