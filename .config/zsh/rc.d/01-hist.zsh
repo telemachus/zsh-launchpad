@@ -17,19 +17,24 @@ if [[ -d $icloud && $VENDOR == apple ]]; then
   # If using iCloud on macOS, store it there, so it syncs across multiple Macs.
   HISTFILE=$icloud/zsh_history
 
-  # Sometimes (probably due to concurrency issues), when the histfile is kept in
-  # iCloud, it is empty when Zsh starts up. However, there should always be a
-  # backup file we can copy.
+  # -s: True if the file exists and is not empty.
+  if ! [[ -s $HISTFILE ]]; then
+    # Sometimes (probably due to concurrency issues), when the histfile is kept
+    # in iCloud, it is empty when Zsh starts up. However, there should always be
+    # a backup file we can copy.
 
-  # Move the largest "$HISTFILE <number>" file to $HISTFILE.
-  # \ escapes/quotes the space behind it.
-  # (O):  Sort descending.
-  # (OL): Sort by size, descending.
-  local -a files=( $HISTFILE(|\ <->)(OL) )
-  [[ -r $files[1] ]] &&
-      mv $files[1] $HISTFILE
+    # Add history entries from the largest "$HISTFILE <number>" file.
+    # \ escapes/quotes the space behind it.
+    # (O):  Sort descending.
+    # (OL): Sort by size, descending.
+    local -a files=( $HISTFILE(|\ <->)(OL) )
+    # -n: True if the string is not empty.
+    [[ -n $files[1] ]] &&
+        fc -RI $files[1]
+  fi
 else
-  # := assigns the variable and then substitutes the expression with its value.
+  # := assigns the variable if it's unset or null and then substitutes its
+  # value.
   HISTFILE=${XDG_DATA_HOME:=~/.local/share}/zsh/history
 fi
 
