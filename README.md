@@ -2,7 +2,13 @@
 A simple dotfiles template to kick-start/bootstrap your `zsh` config and start
 learning how to get the most out of your shell.
 
-Copy these files into your home dir and you're good to go!
+## Installation
+1. Download and extract [this Zip
+   file](https://github.com/marlonrichert/zsh-launchpad/archive/refs/heads/main.zip).
+1. In your terminal:
+   1. `cd` to the directory created by the above.
+   1. Run `make`.
+1. Close your current terminal tab/window and open a new one.
 
 ## What is this? What are its goals?
 * It’s a fully functional set of dotfiles that works out of the box. Its goal
