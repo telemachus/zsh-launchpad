@@ -20,3 +20,6 @@ ZDOTDIR=${XDG_CONFIG_HOME:=~/.config}/zsh
 # To set a default value that is returned *without* setting X, use ${X:-Y}
 # instead.
 # As in other shells, ~ expands to $HOME _at the beginning of a value only._
+
+# Prevent /etc/zshrc_Apple_Terminal from running some unnecessary code.
+export SHELL_SESSIONS_DISABLE=1
