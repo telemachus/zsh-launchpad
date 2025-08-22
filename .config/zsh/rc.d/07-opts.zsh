@@ -1,10 +1,6 @@
 #!/bin/zsh
 
-##
-# Shell options that don't fit in any other file.
-#
 # Set these after sourcing plugins, because those might set options, too.
-#
 
 # Don't let > silently overwrite files. To overwrite, use >! instead.
 setopt NO_CLOBBER
@@ -23,3 +19,13 @@ setopt GLOB_STAR_SHORT
 
 # Sort numbers numerically, not lexicographically.
 setopt NUMERIC_GLOB_SORT
+
+setopt AUTO_CD
+setopt CD_SILENT
+setopt AUTO_LIST
+setopt NO_AUTO_MENU
+setopt NO_MENU_COMPLETE
+setopt CASE_GLOB
+setopt CASE_MATCH
+
+# vim: set ts=8 sw=4 ts=4 tw=0 et ft=zsh :

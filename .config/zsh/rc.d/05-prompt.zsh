@@ -1,12 +1,10 @@
-#!/bin/zsh
+znap clone telemachus/git-prompt.zsh
 
-##
-# Prompt theme
-#
+ZSH_GIT_PROMPT_SHOW_STASH=1
+ZSH_GIT_PROMPT_SHOW_UPSTREAM_NAME=1
 
-# Reduce startup time by making the left side of the primary prompt visible
-# *immediately.*
-znap prompt launchpad
+PROMPT='%3~ $(gitprompt)%# '
+znap source telemachus/git-prompt.zsh
+znap prompt
 
-# `znap prompt` can autoload our prompt function, because in 04-env.zsh, we
-# added its parent dir to our $fpath.
+# vim: set ts=8 sw=4 ts=4 tw=0 et ft=zsh :

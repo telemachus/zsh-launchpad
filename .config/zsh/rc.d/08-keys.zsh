@@ -12,6 +12,22 @@
 # Enable the use of Ctrl-Q and Ctrl-S for keyboard shortcuts.
 unsetopt FLOW_CONTROL
 
+# Use vim bindings, but keep C-a and C-e from emacs.
+bindkey -v
+bindkey '^A' beginning-of-line
+bindkey '^E' end-of-line
+
+autoload -Uz up-line-or-beginning-search
+autoload -Uz down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search
+bindkey "^[[B" down-line-or-beginning-search
+
+# Fix backspace key after using ZLE
+bindkey "^?" backward-delete-char
+
+
 # Alt-Q
 # - On the main prompt: Push aside your current command line, so you can type a
 #   new one. The old command line is re-inserted when you press Alt-G or
@@ -21,21 +37,13 @@ unsetopt FLOW_CONTROL
 bindkey '^[q' push-line-or-edit
 
 
-##
-# Alt-H: Get help on your current command.
-#
-
-unalias run-help 2> /dev/null   # Remove the simple default.
-autoload -RUz run-help          # Load a more advanced version.
-# -R resolves the function immediately, so we can access the source dir.
-
-# Load $functions_source, an associative array (a.k.a. dictionary, hash table
-# or map) that maps each function to its source file.
+# Ctrl-H: Get help on your current command.
+HELPDIR="/usr/share/zsh/$(zsh --version | cut -d' ' -f2)/help"
+(( ${+aliases[run-help]} )) && unalias run-help
+autoload -RUz run-help
 zmodload -F zsh/parameter p:functions_source
-
-# Lazy-load all the run-help-* helper functions from the same dir.
-autoload -Uz $functions_source[run-help]-*~*.zwc  # Exclude .zwc files.
-
+autoload -Uz $functions_source[run-help]-*~*.zwc
+bindkey -M viins '^h' run-help
 
 # Alt-V: Show the next key combo's terminal code and state what it does.
 bindkey '^[v' describe-key-briefly
@@ -59,3 +67,5 @@ bindkey '^[w' where-is
     LBUFFER="sudo $LBUFFER"
   }
 } .sudo
+
+# vim: set ts=8 sw=4 ts=4 tw=0 et ft=zsh :

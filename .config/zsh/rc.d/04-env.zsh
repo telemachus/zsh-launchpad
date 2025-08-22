@@ -1,56 +1,74 @@
-#!/bin/zsh
-
-##
-# Environment variables
-#
-
 # -U ensures each entry in these is unique (that is, discards duplicates).
 export -U PATH path FPATH fpath MANPATH manpath
-export -UT INFOPATH infopath  # -T creates a "tied" pair; see below.
+export -UT INFOPATH infopath
 
-# $PATH and $path (and also $FPATH and $fpath, etc.) are "tied" to each other.
-# Modifying one will also modify the other.
-# Note that each value in an array is expanded separately. Thus, we can use ~
-# for $HOME in each $path entry.
 path=(
-    /home/linuxbrew/.linuxbrew/bin(N)   # (N): null if file doesn't exist
-    ~/.local/bin
+    # (N): null if file doesn't exist
+    $HOME/local/go/bin(N)
+    $HOME/local/lua/bin(N)
+    $HOME/local/lua-language-server/bin(N)
+    $HOME/local/neovim/bin(N)
+    $HOME/local/passage/bin(N)
+    $HOME/local/vim/bin(N)
+    $HOME/.local/bin(N)
+    $HOME/.cargo/bin
+    $HOME/bin(N)
     $path
 )
 
-# Install Homebrew if it's not installed. See https://brew.sh for more info.
-# Need to do this before using $HOMEBREW_PREFIX.
-command -v brew > /dev/null ||
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
 # In order to be able to `autoload` a function for use on the command line, it
-# either needs to be in your $fpath or you need to autoload by absolute path.
-# (Note: Zsh's completions system will automatically autoload completion
-# functions inside dirs that are in your $fpath. So, no need to explicitly
+# either needs to be in the $fpath or you need to autoload by absolute path.
+# Note: Zsh's completions system will automatically autoload completion
+# functions inside dirs that are in the $fpath. So, no need to explicitly
 # autoload those.
 fpath=(
     $ZDOTDIR/functions
-    ~/.local/share/zsh/site-functions
+    $HOME/local/share/zsh/site-functions(N)
     $fpath
-    # Add Homebrew's dir to the end of $fpath, so that we use its completions
+    # Add MacPort's dir to the end of $fpath, so that we use its completions
     # only for those commands that zsh doesn't already know how to complete.
-    $HOMEBREW_PREFIX/share/zsh/site-functions
+    /opt/local/share/zsh/site-functions
 )
-# As you can see above, you can include comments inside array declarations.
 
-# Set the default command to use for browsing text inside the terminal. Not
-# specific to zsh, but used by many external commands.
+export MAILDIR=$HOME/.maildir
+export NO_COLOR=1
+export VISUAL=nvim
+export EDITOR="$VISUAL"
+export VIMCONFIG=$HOME/.vim
+export VIMDATA=$HOME/.vim
+
+# Configure less:
+# -G: no search highlighting
+# -R: handle ANSI escape codes
+# -J: show search locations in side column
+# -x4: 4-space tabs
+# P...: prompt containing [filename/STDIN] and [N%] for percentage through file.
+export LESS='-GRJx4P?f[%f]:[STDIN].?pB - [%pB\%]:\.\.\..'
 export PAGER=less
 
-# Set the default command to use for launching a text editor inside the
-# terminal. Used by Zsh's `fc`, but moreso by many external commands.
-export EDITOR=nano
+# Configure par:
+# r: repeat quote prefixes
+# T: handle tabs
+# b: handle backspaces
+# g: guess paragraphs
+# q: handle nested quotes
+# R: repeat non-whitespace prefixes
+# B=.,?_A_a: body chars (punctuation + letters)
+# Q=_s>|: quote chars (underscore, space, >, |)
+export PARINIT='rTbgqR B=.,?_A_a Q=_s>|'
 
-# If `nano` is just a symlink to `pico`, then install Nano.
-[[ ${${:-=nano}:A} == ${${:-=pico}:A} ]] &&
-    brew install --formula nano
+zsh_directory_name() {
+    emulate -L zsh
 
-# Set the default command to use for launching a text editor with a GUI; not
-# necessarily inside the terminal. Setting it here to Visual Studio Code, which
-# require that you installed the `code` command from there.
-export VISUAL=code
+    if [[ $1 = n && $2 = git ]]; then
+        local git_root=$(git rev-parse --show-toplevel 2>/dev/null)
+        if [[ -n $git_root ]]; then
+            typeset -ga reply=("$git_root")
+            return 0
+        fi
+    fi
+
+    return 1
+}
+
+# vim: set ts=8 sw=4 ts=4 tw=0 et ft=zsh :

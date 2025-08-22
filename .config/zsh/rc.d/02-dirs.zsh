@@ -1,10 +1,6 @@
-#!/bin/zsh
+hash -d \
+    zsh=$ZDOTDIR \
+    dots=$HOME/Documents/git-repos/dotfiles \
+    trinity=$HOME/Documents/git-repos/trinity
 
-##
-# Named directories
-#
-# Create shortcuts for your favorite directories.
-# Set these early, because it affects how dirs are displayed and printed.
-hash -d tmp=$TMPDIR zsh=$ZDOTDIR
-# `hash -d <name>=<path>` makes ~<name> a shortcut for <path>.
-# You can use this ~name anywhere you would specify a dir, not just with `cd`!
+# vim: set ts=8 sw=4 ts=4 tw=0 et ft=zsh :

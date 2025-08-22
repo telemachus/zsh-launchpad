@@ -8,6 +8,7 @@ SHELL = /bin/zsh
 ENV ?= $(HOME)/.zshenv
 ZDOTDIR ?= $(HOME)/.config/zsh
 
+# TODO: Have this use ln -s rather than mv and cp.
 all:
 	chmod -R go-rw .config/zsh/{.zshrc,rc.d}
 	-mv $(ENV) $(ENV)~ 2>/dev/null
